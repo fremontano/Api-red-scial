@@ -35,6 +35,3 @@ route.get('/avatar/:file', check.auth, userController.avatar);
 // Exportar router
 module.exports = route;
 
-// const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-// const ext = path.extname(file.originalname);
-// 
