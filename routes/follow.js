@@ -8,6 +8,7 @@ const check = require('../middleware/auth');
 route.get('/followTest', followController.followTest);
 route.post('/save', check.auth, followController.save); //http://localhost:3000/api/follow/save
 route.delete('/unfollowing/:id', check.auth, followController.unfollowing);
+route.get('/following/:id?/:page?', check.auth, followController.following);
 
 
 

@@ -109,7 +109,56 @@ const unfollowing = async (req, res) => {
 
 
 //Accion listado de usarios que estoy siguiendo
+const following = async (req, res) => {
 
+    try {
+        // Obtener el id del usuario identificado
+        const identifiedUser = req.user.id;
+        // Comprobar si llega el id por el parametro URL
+        const followedId = req.params.id;
+
+        if (!followedId) {
+            return res.status(400).send({
+                status: 'error',
+                message: 'No se ha proporcionado el ID del usuario a seguir'
+            });
+        }
+
+        // Establecer la cantidad de usuarios por pagina
+        const limit = 5;
+        const page = req.query.page || 1;
+
+
+        // Consultar la base de datos para obtener los usuarios que sigue
+        const follows = await Follow.find({ user: identifiedUser })
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .populate('followed', 'user');
+
+
+        return res.status(200).send({
+            message: 'Usuarios que sigues',
+            follows
+        });
+
+    } catch (error) {
+        return res.status(500).send({
+            status: 'error',
+            message: 'Error al listar usuarios que sigues',
+            error
+        });
+    }
+
+    // Obtener arrays de usuarios a seguir y los que me siguen 
+
+
+
+
+
+    return res.status(200).send({
+        message: 'Accion usuario a seguir'
+    });
+}
 
 
 //Accion listado de usuarios que me siguen
@@ -125,5 +174,6 @@ const unfollowing = async (req, res) => {
 module.exports = {
     followTest,
     save,
-    unfollowing
+    unfollowing,
+    following
 };
